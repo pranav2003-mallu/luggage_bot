@@ -1,0 +1,18 @@
+# Build and Install folders
+build/
+install/
+log/
+
+# IDEs
+.vscode/
+.idea/
+
+# Node
+node_modules/
+
+# Python
+__pycache__/
+*.pyc
+
+# OS
+.DS_Store

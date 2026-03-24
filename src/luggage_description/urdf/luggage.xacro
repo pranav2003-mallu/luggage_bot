@@ -1,0 +1,252 @@
+<?xml version="1.0" ?>
+<robot name="Luggage" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+<xacro:include filename="$(find luggage_description)/urdf/materials.xacro" />
+
+<link name="base_footprint"/>
+<joint name="base_joint" type="fixed">
+  <parent link="base_footprint"/>
+  <child link="base_link"/>
+  <origin xyz="0 0 0" rpy="0 0 0"/>
+</joint>
+
+<link name="base_link">
+  <inertial>
+    <origin xyz="-0.04155435148983267 0.00019978158201649002 0.2600118999268405" rpy="0 0 0"/>
+    <mass value="57.28490014252565"/>
+    <inertia ixx="7.906906" iyy="8.248861" izz="2.580355" ixy="0.001262" iyz="-0.005831" ixz="1.449235"/>
+  </inertial>
+  <visual>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://luggage_description/meshes/base_link.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="white"/>
+  </visual>
+  <collision>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://luggage_description/meshes/base_link.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="right_wheel_1">
+  <inertial>
+    <origin xyz="-8.678876819547652e-12 -0.039651864535639986 0.16320871216458172" rpy="0 0 0"/>
+    <mass value="0.970427506826019"/>
+    <inertia ixx="0.000736" iyy="0.001376" izz="0.000736" ixy="0.0" iyz="0.0" ixz="0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.0 0.127209 0.115" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://luggage_description/meshes/right_wheel_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="dark_grey"/>
+  </visual>
+  <collision>
+    <origin xyz="0.0 0.127209 0.115" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://luggage_description/meshes/right_wheel_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="left_wheel_1">
+  <inertial>
+    <origin xyz="-8.663971012969507e-12 0.2933481354643602 -0.1617912878354192" rpy="0 0 0"/>
+    <mass value="0.970427506826019"/>
+    <inertia ixx="0.000736" iyy="0.001376" izz="0.000736" ixy="0.0" iyz="0.0" ixz="0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.0 0.127209 -0.21" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://luggage_description/meshes/left_wheel_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="dark_grey"/>
+  </visual>
+  <collision>
+    <origin xyz="0.0 0.127209 -0.21" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://luggage_description/meshes/left_wheel_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="rear_left_castor_wheel_1">
+  <inertial>
+    <origin xyz="0.018293361989764972 -0.013583369696051645 0.15780558745450107" rpy="0 0 0"/>
+    <mass value="0.4900823971797279"/>
+    <inertia ixx="0.000189" iyy="0.00026" izz="0.000143" ixy="0.0" iyz="-0.0" ixz="6e-05"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.173022 0.1595 0.125022" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://luggage_description/meshes/rear_left_castor_wheel_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="black"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.173022 0.1595 0.125022" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://luggage_description/meshes/rear_left_castor_wheel_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="front_left_castor_wheel_1">
+  <inertial>
+    <origin xyz="-0.018241713267546672 -0.013462489320543364 0.1578807182999861" rpy="0 0 0"/>
+    <mass value="0.49141625140362144"/>
+    <inertia ixx="0.00019" iyy="0.000261" izz="0.000144" ixy="0.0" iyz="1e-06" ixz="-6e-05"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.173022 0.1595 0.125022" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://luggage_description/meshes/front_left_castor_wheel_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="black"/>
+  </visual>
+  <collision>
+    <origin xyz="0.173022 0.1595 0.125022" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://luggage_description/meshes/front_left_castor_wheel_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="rear_right_castor_wheel_1">
+  <inertial>
+    <origin xyz="0.018241713267546422 0.3324624893205428 -0.18816328170001376" rpy="0 0 0"/>
+    <mass value="0.49141625140362816"/>
+    <inertia ixx="0.00019" iyy="0.000261" izz="0.000144" ixy="0.0" iyz="-1e-06" ixz="6e-05"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.173022 0.1595 -0.221022" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://luggage_description/meshes/rear_right_castor_wheel_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="black"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.173022 0.1595 -0.221022" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://luggage_description/meshes/rear_right_castor_wheel_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="front_right_castor_wheel_1">
+  <inertial>
+    <origin xyz="-0.018432268038539118 0.3327847625871349 -0.18816328170001462" rpy="0 0 0"/>
+    <mass value="0.49141625140362577"/>
+    <inertia ixx="0.00019" iyy="0.000261" izz="0.000144" ixy="0.0" iyz="1e-06" ixz="-6e-05"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.173022 0.1595 -0.221022" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://luggage_description/meshes/front_right_castor_wheel_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="black"/>
+  </visual>
+  <collision>
+    <origin xyz="0.173022 0.1595 -0.221022" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://luggage_description/meshes/front_right_castor_wheel_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="display_link_1">
+  <inertial>
+    <origin xyz="0.010971565218587886 1.154298280600943 0.9983860709471024" rpy="0 0 0"/>
+    <mass value="0.8395394764270585"/>
+    <inertia ixx="0.002664" iyy="0.000726" izz="0.002113" ixy="-2e-06" iyz="0.0" ixz="-0.000232"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.233116 1.155804 -0.111" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://luggage_description/meshes/display_link_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="black"/>
+  </visual>
+  <collision>
+    <origin xyz="0.233116 1.155804 -0.111" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://luggage_description/meshes/display_link_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="lidar_1">
+  <inertial>
+    <origin xyz="-0.012430298462604072 -0.00023976641704669244 0.011368410178448085" rpy="0 0 0"/>
+    <mass value="0.915948795313175"/>
+    <inertia ixx="0.000369" iyy="0.000787" izz="0.000883" ixy="6e-06" iyz="3e-06" ixz="-0.000151"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.175 0.0 -0.0855" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://luggage_description/meshes/lidar_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="blue"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.175 0.0 -0.0855" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://luggage_description/meshes/lidar_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<joint name="right_wheel_joint" type="continuous">
+  <origin xyz="0.0 -0.127209 -0.115" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="right_wheel_1"/>
+  <axis xyz="-0.0 -1.0 0.0"/>
+</joint>
+
+<joint name="left_wheel_joint" type="continuous">
+  <origin xyz="0.0 -0.127209 0.21" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="left_wheel_1"/>
+  <axis xyz="0.0 1.0 -0.0"/>
+</joint>
+
+<joint name="rear_left_castor_joint" type="fixed">
+  <origin xyz="0.173022 -0.1595 -0.125022" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="rear_left_castor_wheel_1"/>
+</joint>
+
+<joint name="front_left_castor_joint" type="fixed">
+  <origin xyz="-0.173022 -0.1595 -0.125022" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="front_left_castor_wheel_1"/>
+</joint>
+
+<joint name="rear_right_castor_joint" type="fixed">
+  <origin xyz="0.173022 -0.1595 0.221022" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="rear_right_castor_wheel_1"/>
+</joint>
+
+<joint name="front_right_castor_joint" type="fixed">
+  <origin xyz="-0.173022 -0.1595 0.221022" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="front_right_castor_wheel_1"/>
+</joint>
+
+<joint name="display_joint" type="fixed">
+  <origin xyz="-0.233116 -1.155804 0.111" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="display_link_1"/>
+</joint>
+
+<joint name="lidar_joint" type="fixed">
+  <origin xyz="0.175 0.0 0.0855" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="lidar_1"/>
+</joint>
+
+</robot>
