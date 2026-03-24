@@ -69,6 +69,14 @@
 /* Serial port baud rate */
 #define BAUDRATE     115200
 
+/* Humynex Custom Indicators */
+#define STATUS_LED     12
+#define RELAY_1_PIN    8
+#define RELAY_2_PIN    11
+
+unsigned long next_blink_time = 0;
+bool led_state = false;
+
 /* Maximum PWM signal */
 #define MAX_PWM        255
 
@@ -246,6 +254,13 @@ int runCommand() {
 void setup() {
   Serial.begin(BAUDRATE);
 
+  // Initialize Humynex Indicators & Relays
+  pinMode(STATUS_LED, OUTPUT);
+  pinMode(RELAY_1_PIN, OUTPUT);
+  pinMode(RELAY_2_PIN, OUTPUT);
+  digitalWrite(RELAY_1_PIN, LOW); // Default off
+  digitalWrite(RELAY_2_PIN, LOW); // Default off
+
 // Initialize the motor controller if used */
 #ifdef USE_BASE
   #ifdef ARDUINO_ENC_COUNTER
@@ -341,6 +356,20 @@ void loop() {
   if ((millis() - lastMotorCommand) > AUTO_STOP_INTERVAL) {;
     setMotorSpeeds(0, 0);
     moving = 0;
+  }
+
+  // Humynex LED Indicator Logic
+  if (millis() >= next_blink_time) {
+    led_state = !led_state;
+    digitalWrite(STATUS_LED, led_state);
+    
+    if (moving == 1) {
+      // Robot is actively driving: Fast blink
+      next_blink_time = millis() + 150;
+    } else {
+      // Robot is idle (auto-stopped or zeroed): Slow pulse
+      next_blink_time = millis() + 1000;
+    }
   }
 #endif
 
