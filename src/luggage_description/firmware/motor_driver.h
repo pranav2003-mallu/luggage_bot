@@ -7,25 +7,17 @@
 #ifndef MOTOR_DRIVER_H
 #define MOTOR_DRIVER_H
 
-// Left Front Motor (M1L)
-#define LF_PWM 2 // ENA(L)
-#define LF_IN1 3 // IN1(L)
-#define LF_IN2 4 // IN2(L)
+// ==========================================
+// 🚗 MDD20A MOTOR DRIVER PINS (Cytron)
+// ==========================================
 
-// Left Rear Motor (M2L)
-#define LR_PWM 5 // ENB(L)
-#define LR_IN1 6 // IN3(L)
-#define LR_IN2 7 // IN4(L)
+// Right Motor
+#define RIGHT_MOTOR_PWM 6   // Connect to MDD20A PWM 1
+#define RIGHT_MOTOR_DIR 7   // Connect to MDD20A DIR 1
 
-// Right Front Motor (M1R)
-#define RF_PWM 8 // ENA(R)
-#define RF_IN1 9 // IN1(R)
-#define RF_IN2 10 // IN2(R)
-
-// Right Rear Motor (M2R)
-#define RR_PWM 11 // ENB(R)
-#define RR_IN1 12 // IN3(R)
-#define RR_IN2 13 // IN4(R)
+// Left Motor
+#define LEFT_MOTOR_PWM 8    // Connect to MDD20A PWM 2
+#define LEFT_MOTOR_DIR 9    // Connect to MDD20A DIR 2
 
 void initMotorController();
 void setMotorSpeed(int i, int spd);
