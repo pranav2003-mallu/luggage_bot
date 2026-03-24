@@ -12,7 +12,7 @@ from launch_ros.parameter_descriptions import ParameterValue
 
 def generate_launch_description():
     pkg_share = get_package_share_directory('luggage_description')
-    pico_port = LaunchConfiguration('pico_port')
+    nano_port = LaunchConfiguration('nano_port')
 
     xacro_file = os.path.join(pkg_share, 'urdf', 'luggage.xacro')
     rviz_config = os.path.join(pkg_share, 'rviz', 'rviz.rviz')
@@ -21,7 +21,7 @@ def generate_launch_description():
     robot_desc = ParameterValue(Command(['xacro ', xacro_file]), value_type=str)
 
     return LaunchDescription([
-        DeclareLaunchArgument('pico_port', default_value='/dev/ttyACM0', description='Pico Serial Port'),
+        DeclareLaunchArgument('nano_port', default_value='/dev/ttyUSB0', description='Pico Serial Port'),
 
         # 1. Robot State Publisher (UPDATED FOR WEB BROADCAST)
         Node(
@@ -47,7 +47,7 @@ def generate_launch_description():
         Node(
             package='luggage_description',
             executable='nano_bridge.py',
-            parameters=[{'port_name': pico_port}],
+            parameters=[{'port_name': nano_port}],
             output='screen'
         )
     ])

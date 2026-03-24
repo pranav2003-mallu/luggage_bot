@@ -20,7 +20,7 @@ def generate_launch_description():
     # Arguments
     map_yaml = LaunchConfiguration('map')  
     lidar_port = LaunchConfiguration('lidar_port')
-    pico_port = LaunchConfiguration('pico_port')
+    nano_port = LaunchConfiguration('nano_port')
     use_rviz = LaunchConfiguration('use_rviz')
 
     xacro_file = os.path.join(pkg_share, 'urdf', 'luggage.xacro')
@@ -31,7 +31,7 @@ def generate_launch_description():
     return LaunchDescription([
         DeclareLaunchArgument('map', description='Full path to map yaml file to load'),
         DeclareLaunchArgument('lidar_port', default_value='/dev/ttyUSB0'),
-        DeclareLaunchArgument('pico_port', default_value='/dev/ttyACM0'),
+        DeclareLaunchArgument('nano_port', default_value='/dev/ttyUSB0'),
 
         # 1. Robot State, Joints, & Transforms (UPDATED FOR WEB BROADCAST)
         Node(
@@ -59,7 +59,7 @@ def generate_launch_description():
         Node(
             package='luggage_description',
             executable='nano_bridge.py',
-            parameters=[{'port_name': pico_port}]
+            parameters=[{'port_name': nano_port}]
         ),
 
         # 3. RPLidar
