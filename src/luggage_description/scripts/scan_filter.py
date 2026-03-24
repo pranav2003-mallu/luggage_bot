@@ -1,8 +1,8 @@
+#!/usr/bin/env python3
 # Developed by Humynex Robotics - We make your ideas into reality
 # Email: humynexrobotics@gmail.com
 # Phone: 8714358646
 
-#!/usr/bin/env python3
 import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import LaserScan
