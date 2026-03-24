@@ -16,13 +16,14 @@ install(PROGRAMS
   DESTINATION lib/${PROJECT_NAME}
 )
 
-# Install Hardware and Config directories
+# Install Hardware, Firmware, and Config directories
 install(DIRECTORY
   launch
   urdf
   meshes
   config
   rviz
+  firmware
   DESTINATION share/${PROJECT_NAME}
 )
 
