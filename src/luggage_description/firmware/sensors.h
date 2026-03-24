@@ -1,3 +1,9 @@
+/*
+ * Developed by Humynex Robotics - We make your ideas into reality
+ * Email: humynexrobotics@gmail.com
+ * Phone: 8714358646
+ */
+
 #ifndef SENSORS_H
 #define SENSORS_H
 

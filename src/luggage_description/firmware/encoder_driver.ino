@@ -1,3 +1,9 @@
+/*
+ * Developed by Humynex Robotics - We make your ideas into reality
+ * Email: humynexrobotics@gmail.com
+ * Phone: 8714358646
+ */
+
 #ifdef USE_BASE
 
 volatile long l_enc_pos = 0L;

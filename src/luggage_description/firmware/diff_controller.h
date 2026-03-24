@@ -1,3 +1,9 @@
+/*
+ * Developed by Humynex Robotics - We make your ideas into reality
+ * Email: humynexrobotics@gmail.com
+ * Phone: 8714358646
+ */
+
 #ifndef DIFF_CONTROLLER_H
 #define DIFF_CONTROLLER_H
 
