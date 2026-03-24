@@ -10,7 +10,7 @@ find_package(ament_cmake_python REQUIRED)
 
 # Install Python scripts (The Bridge and Filter)
 install(PROGRAMS
-  scripts/pico_bridge.py
+  scripts/nano_bridge.py
   scripts/scan_filter.py
   scripts/fake_odom.py
   DESTINATION lib/${PROJECT_NAME}

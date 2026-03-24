@@ -12,9 +12,9 @@ import math
 from tf2_ros import TransformBroadcaster
 from rcl_interfaces.msg import SetParametersResult
 
-class PicoBridge(Node):
+class NanoBridge(Node):
     def __init__(self):
-        super().__init__('pico_bridge')
+        super().__init__('nano_bridge')
         
         # ==========================================
         # ⚠️ HARDWARE TUNING THRESHOLDS ⚠️
@@ -22,7 +22,7 @@ class PicoBridge(Node):
         self.WHEEL_RADIUS = 0.085  # Meters (Adjust to real wheel)
         self.WHEEL_BASE = 0.254    # Meters (Distance between wheels)
         self.TICKS_PER_REV = 330.0 # Encoder ticks per revolution
-        self.PID_RATE = 30.0       # Hz (Must match Pico firmware)
+        self.PID_RATE = 30.0       # Hz (Must match Nano firmware)
         
         self.KP = 20
         self.KD = 12
@@ -31,7 +31,7 @@ class PicoBridge(Node):
         # ==========================================
 
         # GUI-Editable Parameters
-        self.declare_parameter('port_name', '/dev/ttyACM0')
+        self.declare_parameter('port_name', '/dev/ttyUSB0')
         self.declare_parameter('baud_rate', 115200)
         self.port_name = self.get_parameter('port_name').value
         self.baud_rate = self.get_parameter('baud_rate').value
@@ -57,7 +57,7 @@ class PicoBridge(Node):
 
         # Odometry Request Loop
         self.create_timer(1.0 / self.PID_RATE, self.odom_loop)
-        self.get_logger().info(f"✅ Pico Bridge Started on {self.port_name}")
+        self.get_logger().info(f"✅ Nano Bridge Started on {self.port_name}")
 
     def parameter_callback(self, params):
         for param in params:
@@ -174,7 +174,7 @@ class PicoBridge(Node):
 
 def main():
     rclpy.init()
-    node = PicoBridge()
+    node = NanoBridge()
     rclpy.spin(node)
     node.destroy_node()
     rclpy.shutdown()

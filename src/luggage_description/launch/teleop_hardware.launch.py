@@ -46,7 +46,7 @@ def generate_launch_description():
         # 3. REAL HARDWARE BRIDGE (Replaces fake_odom)
         Node(
             package='luggage_description',
-            executable='pico_bridge.py',
+            executable='nano_bridge.py',
             parameters=[{'port_name': pico_port}],
             output='screen'
         )

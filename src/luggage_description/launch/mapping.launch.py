@@ -57,7 +57,7 @@ def generate_launch_description():
         # 2. Hardware Bridge (Pico)
         Node(
             package='luggage_description',
-            executable='pico_bridge.py',
+            executable='nano_bridge.py',
             parameters=[{'port_name': pico_port}]
         ),
 
