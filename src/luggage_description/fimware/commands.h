@@ -4,6 +4,10 @@
  * Phone: 8714358646
  */
 
+/* Define single-letter commands that will be sent by the PC over the
+   serial link.
+*/
+
 #ifndef COMMANDS_H
 #define COMMANDS_H
 
@@ -21,8 +25,9 @@
 #define UPDATE_PID     'u'
 #define DIGITAL_WRITE  'w'
 #define ANALOG_WRITE   'x'
-
-#define LEFT           0
-#define RIGHT          1
+#define LEFT            0
+#define RIGHT           1
 
 #endif
+
+
