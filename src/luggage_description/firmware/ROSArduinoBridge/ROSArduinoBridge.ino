@@ -364,10 +364,16 @@ void loop() {
     digitalWrite(STATUS_LED, led_state);
     
     if (moving == 1) {
-      // Robot is actively driving: Fast blink
-      next_blink_time = millis() + 150;
+      if ((leftPID.TargetTicksPerFrame > 0 && rightPID.TargetTicksPerFrame < 0) || 
+          (leftPID.TargetTicksPerFrame < 0 && rightPID.TargetTicksPerFrame > 0)) {
+        // Robot is TURNING (Differential): Ultra-fast strobe
+        next_blink_time = millis() + 80;
+      } else {
+        // Robot is moving Forward/Back: Fast blink
+        next_blink_time = millis() + 150;
+      }
     } else {
-      // Robot is idle (auto-stopped or zeroed): Slow pulse
+      // Robot is idle: Slow pulse
       next_blink_time = millis() + 1000;
     }
   }
