@@ -1,9 +1,3 @@
-/*
- * Developed by Humynex Robotics - We make your ideas into reality
- * Email: humynexrobotics@gmail.com
- * Phone: 8714358646
- */
-
 import React, { useState, useEffect } from 'react';
 import * as ROSLIB from 'roslib';
 import { Wifi, Smartphone, Settings2, Power, ShieldAlert, Cpu, HardDrive, RefreshCw, Moon, Sun, Lock, AlertTriangle, X } from 'lucide-react';
@@ -67,6 +61,9 @@ export default function SettingsPage({ ros, wifiData, sysTelemetry, globalState,
     const toggleDevMode = () => {
         if (syncState) syncState({ dev_mode: !devMode });
     };
+
+    // Standard port options
+    const defaultPorts = ['/dev/ttyACM0', '/dev/ttyACM1', '/dev/ttyUSB0', '/dev/ttyUSB1'];
 
     return (
         <div className="h-full flex flex-col items-center animate-fade-in-up pb-6 px-4 py-8 relative max-w-7xl mx-auto">
@@ -210,19 +207,63 @@ export default function SettingsPage({ ros, wifiData, sysTelemetry, globalState,
                             </div>
                         )}
 
-                        {/* HARDWARE POPOUT */}
+                        {/* HARDWARE POPOUT (UPDATED WITH PORT DROPDOWNS & LEDS) */}
                         {expandedCard === 'hardware' && (
                             <div className="flex flex-col h-full items-center text-center py-4">
                                 <Cpu size={64} className="text-emerald-500 mb-6" />
                                 <h3 className={`font-black text-2xl tracking-widest mb-10 ${isDark ? 'text-white' : 'text-slate-900'}`}>HARDWARE & DEV TOOLS</h3>
 
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 w-full max-w-lg mx-auto">
-                                    <div className={`p-6 rounded-3xl border flex flex-col items-center shadow-inner ${sysTelemetry.pico_connected ? 'bg-emerald-500/10 border-emerald-500/30' : 'bg-red-500/10 border-red-500/30'}`}>
-                                        <span className="text-slate-500 font-mono text-[10px] md:text-xs tracking-widest mb-3">MOTOR MCU (PICO)</span>
+
+                                    {/* MCU / PICO BLOCK */}
+                                    <div className={`p-6 rounded-3xl border flex flex-col items-center shadow-inner transition-all ${sysTelemetry.pico_connected ? 'bg-emerald-500/10 border-emerald-500/30' : 'bg-red-500/10 border-red-500/30'}`}>
+                                        <div className="flex items-center gap-2 mb-3">
+                                            {/* Status LED */}
+                                            <div className={`w-3 h-3 rounded-full shadow-md ${sysTelemetry.pico_connected ? 'bg-emerald-500 animate-pulse shadow-[0_0_10px_rgba(16,185,129,0.8)]' : 'bg-red-500'}`}></div>
+                                            <span className="text-slate-500 font-mono text-[10px] md:text-xs tracking-widest">MOTOR MCU (PICO)</span>
+                                        </div>
+
+                                        {/* Port Dropdown */}
+                                        <select
+                                            value={sysTelemetry.pico_port || '/dev/ttyACM0'}
+                                            onChange={(e) => triggerSysCmd(`SET_PORT|PICO|${e.target.value}`)}
+                                            className={`w-full text-center border px-3 py-2 rounded-xl font-mono text-xs md:text-sm focus:outline-none focus:border-emerald-500 mb-3 transition-colors cursor-pointer ${isDark ? 'bg-slate-900 border-slate-700 text-white' : 'bg-white border-slate-300 text-slate-900'}`}
+                                        >
+                                            <option value="/dev/ttyACM0">/dev/ttyACM0</option>
+                                            <option value="/dev/ttyACM1">/dev/ttyACM1</option>
+                                            <option value="/dev/ttyUSB0">/dev/ttyUSB0</option>
+                                            <option value="/dev/ttyUSB1">/dev/ttyUSB1</option>
+                                            {sysTelemetry.available_ports && sysTelemetry.available_ports.map(port => (
+                                                !defaultPorts.includes(port) && <option key={port} value={port}>{port}</option>
+                                            ))}
+                                        </select>
+
                                         <div className={`font-black text-xl md:text-2xl ${sysTelemetry.pico_connected ? 'text-emerald-500' : 'text-red-500'}`}>{sysTelemetry.pico_connected ? 'ONLINE' : 'OFFLINE'}</div>
                                     </div>
-                                    <div className={`p-6 rounded-3xl border flex flex-col items-center shadow-inner ${sysTelemetry.lidar_connected ? 'bg-emerald-500/10 border-emerald-500/30' : 'bg-red-500/10 border-red-500/30'}`}>
-                                        <span className="text-slate-500 font-mono text-[10px] md:text-xs tracking-widest mb-3">LIDAR SENSOR</span>
+
+                                    {/* LIDAR SENSOR BLOCK */}
+                                    <div className={`p-6 rounded-3xl border flex flex-col items-center shadow-inner transition-all ${sysTelemetry.lidar_connected ? 'bg-emerald-500/10 border-emerald-500/30' : 'bg-red-500/10 border-red-500/30'}`}>
+                                        <div className="flex items-center gap-2 mb-3">
+                                            {/* Status LED */}
+                                            <div className={`w-3 h-3 rounded-full shadow-md ${sysTelemetry.lidar_connected ? 'bg-emerald-500 animate-pulse shadow-[0_0_10px_rgba(16,185,129,0.8)]' : 'bg-red-500'}`}></div>
+                                            <span className="text-slate-500 font-mono text-[10px] md:text-xs tracking-widest">LIDAR SENSOR</span>
+                                        </div>
+
+                                        {/* Port Dropdown */}
+                                        <select
+                                            value={sysTelemetry.lidar_port || '/dev/ttyUSB0'}
+                                            onChange={(e) => triggerSysCmd(`SET_PORT|LIDAR|${e.target.value}`)}
+                                            className={`w-full text-center border px-3 py-2 rounded-xl font-mono text-xs md:text-sm focus:outline-none focus:border-emerald-500 mb-3 transition-colors cursor-pointer ${isDark ? 'bg-slate-900 border-slate-700 text-white' : 'bg-white border-slate-300 text-slate-900'}`}
+                                        >
+                                            <option value="/dev/ttyUSB0">/dev/ttyUSB0</option>
+                                            <option value="/dev/ttyUSB1">/dev/ttyUSB1</option>
+                                            <option value="/dev/ttyACM0">/dev/ttyACM0</option>
+                                            <option value="/dev/ttyACM1">/dev/ttyACM1</option>
+                                            {sysTelemetry.available_ports && sysTelemetry.available_ports.map(port => (
+                                                !defaultPorts.includes(port) && <option key={port} value={port}>{port}</option>
+                                            ))}
+                                        </select>
+
                                         <div className={`font-black text-xl md:text-2xl ${sysTelemetry.lidar_connected ? 'text-emerald-500' : 'text-red-500'}`}>{sysTelemetry.lidar_connected ? 'ONLINE' : 'OFFLINE'}</div>
                                     </div>
                                 </div>
@@ -353,8 +394,8 @@ export default function SettingsPage({ ros, wifiData, sysTelemetry, globalState,
 
             {/* FOOTER: COPYRIGHT & VERSION */}
             <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center justify-center opacity-40 hover:opacity-100 transition-opacity z-10">
-                <span className={`font-mono text-[9px] md:text-[10px] tracking-[0.2em] font-bold ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>© 2026 HUMYNEX ROBOTICS</span>
-                <span className={`font-mono text-[8px] md:text-[9px] tracking-[0.3em] mt-1 ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>AEROPORTER OS v2.3.2</span>
+                <span className={`font-mono text-[11px] md:text-[13px] tracking-[0.25em] font-bold ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>© 2026 HUMYNEX ROBOTICS</span>
+                <span className={`font-mono text-[9px] md:text-[10px] tracking-[0.3em] mt-1 ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>AEROPORTER OS v2.3.2</span>
             </div>
 
         </div>

@@ -1,8 +1,4 @@
 #!/usr/bin/env python3
-# Developed by Humynex Robotics - We make your ideas into reality
-# Email: humynexrobotics@gmail.com
-# Phone: 8714358646
-
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import String
@@ -13,6 +9,7 @@ import signal
 import time
 import json
 import socket
+import glob
 
 class SystemManager(Node):
     def __init__(self):
@@ -32,13 +29,16 @@ class SystemManager(Node):
             "dev_mode": False,
             "theme": "dark"
         }
-        # ---------------------------------
+        
+        # Custom Hardware Port Selection
+        self.pico_port = '/dev/ttyACM0'
+        self.lidar_port = '/dev/ttyUSB0'
         
         self.active_processes = []
         self.robot_ip = self.get_ip_address()
         
         self.timer = self.create_timer(2.0, self.publish_telemetry) 
-        self.state_timer = self.create_timer(0.1, self.publish_global_state) # Upgraded to 10Hz for smoother progress bar mirroring!
+        self.state_timer = self.create_timer(0.1, self.publish_global_state)
         
         self.get_logger().info("✅ Humynex OS System Manager is ONLINE.")
 
@@ -55,24 +55,37 @@ class SystemManager(Node):
         return ip
 
     def state_update_callback(self, msg):
-        """Receives any state update from ANY client and forces it into the Master State"""
         try:
             new_state = json.loads(msg.data)
             for key, value in new_state.items():
-                # BUG FIX: Removed the strict filter. Now ANY variable can be mirrored instantly!
                 self.global_state[key] = value
         except Exception as e:
             self.get_logger().error(f"State Update Error: {e}")
 
     def publish_global_state(self):
-        """Broadcasts the Master State to ALL clients"""
         msg = String()
         msg.data = json.dumps(self.global_state)
         self.global_state_pub.publish(msg)
 
     def publish_telemetry(self):
-        pico_connected = os.path.exists('/dev/ttyACM0') or os.path.exists('/dev/ttyACM1')
-        lidar_connected = os.path.exists('/dev/ttyUSB0') or os.path.exists('/dev/ttyUSB1')
+        # Dynamically scan all connected USB/ACM devices
+        available_ports = glob.glob('/dev/ttyACM*') + glob.glob('/dev/ttyUSB*')
+        
+        # Auto-fetch fallback: If current port is disconnected, automatically find the correct one
+        if not os.path.exists(self.pico_port):
+            for p in available_ports:
+                if ('ACM' in p or 'USB' in p) and p != self.lidar_port:
+                    self.pico_port = p
+                    break
+                    
+        if not os.path.exists(self.lidar_port):
+            for p in available_ports:
+                if ('USB' in p or 'ACM' in p) and p != self.pico_port:
+                    self.lidar_port = p
+                    break
+
+        pico_connected = os.path.exists(self.pico_port)
+        lidar_connected = os.path.exists(self.lidar_port)
         
         external_ips = set()
         try:
@@ -91,6 +104,9 @@ class SystemManager(Node):
         telemetry = {
             'pico_connected': pico_connected,
             'lidar_connected': lidar_connected,
+            'pico_port': self.pico_port,
+            'lidar_port': self.lidar_port,
+            'available_ports': available_ports,
             'external_clients': len(external_ips),
             'connected_ips': list(external_ips)
         }
@@ -103,6 +119,18 @@ class SystemManager(Node):
         command = msg.data
         self.get_logger().info(f"Received GUI Command: {command}")
 
+        # Listen for port changes from the GUI Dropdowns
+        if command.startswith('SET_PORT|'):
+            parts = command.split('|')
+            if len(parts) == 3:
+                device = parts[1]
+                port = parts[2]
+                if device == 'PICO':
+                    self.pico_port = port
+                elif device == 'LIDAR':
+                    self.lidar_port = port
+            return
+
         if command in ['LAUNCH_SIM', 'LAUNCH_HW', 'LAUNCH_MAPPING'] or command.startswith('LAUNCH_NAV'):
             self.global_state["system_status"] = "running"
         elif command == 'KILL':
@@ -112,6 +140,7 @@ class SystemManager(Node):
         if command == 'LAUNCH_SIM':
             self.start_process(["ros2", "launch", "luggage_description", "teleop_rviz.launch.py"])
         elif command == 'LAUNCH_HW':
+            # You can now pass self.pico_port to your launch file if needed!
             self.start_process(["ros2", "launch", "luggage_description", "teleop_hardware.launch.py"])
         elif command == 'LAUNCH_MAPPING':
             self.start_process(["ros2", "launch", "luggage_description", "mapping.launch.py"])
