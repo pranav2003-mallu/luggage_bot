@@ -17,12 +17,12 @@ class NanoBridge(Node):
         super().__init__('nano_bridge')
         
         # ==========================================
-        # ⚠️ HARDWARE TUNING THRESHOLDS ⚠️
+        # ⚙️ EXACT HARDWARE SPECS (PGM45775-71.2K)
         # ==========================================
-        self.WHEEL_RADIUS = 0.085  # Meters (Adjust to real wheel)
-        self.WHEEL_BASE = 0.254    # Meters (Distance between wheels)
-        self.TICKS_PER_REV = 330.0 # Encoder ticks per revolution
-        self.PID_RATE = 30.0       # Hz (Must match Nano firmware)
+        self.WHEEL_RADIUS = 0.043  # Meters (Diameter 8.6cm)
+        self.WHEEL_BASE = 0.30     # Meters (Distance between motors)
+        self.TICKS_PER_REV = 1993.6 # (7 PPR Encoder * 4 Quadrature * 71.2 Ratio)
+        self.PID_RATE = 15.0       # Hz (Lower rate = More ticks per frame)
         
         self.KP = 20
         self.KD = 12
